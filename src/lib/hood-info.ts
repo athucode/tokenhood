@@ -6,8 +6,8 @@ export const HOOD_INFO = {
   name: "TokenHood",
   symbol: "HOOD",
   /** Contract address. Leave "0x..." until the token is live. */
-  contractAddress: "0x...",
-  chainName: "Base",
+  contractAddress: "0x......",
+  chainName: "Robinhood",
   /** Platform that deployed the token. url is optional (leave "" to show plain text). */
   deployer: { name: "Ponsfamily", url: "" },
   x: { handle: "@TokenHood", url: "https://x.com/TokenHood" },
