@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createPublicClient, http, isAddress, isAddressEqual, keccak256, parseEventLogs, erc20Abi, toHex } from "viem";
-import { getPageBySlug, insertPage, isTxUsed, listPages } from "@/lib/db";
+import { getPageBySlug, insertPage, isTxUsed, listPages, listPagesByOwner } from "@/lib/db";
 import { ADMIN_SIG_TTL_MS, HOOD_CHAIN, HOOD_RPC_SERVER, HOOD_TOKEN_ADDRESS, HOOD_TREASURY_ADDRESS, adminPublishMessage, isAdmin, isHoodConfigured, publishMessage, toHoodUnits } from "@/lib/hood";
 import { getTemplate } from "@/lib/templates";
 import { validateDraft } from "@/lib/validate";
@@ -10,9 +10,12 @@ export const dynamic = "force-dynamic";
 
 const client = createPublicClient({ chain: HOOD_CHAIN, transport: http(HOOD_RPC_SERVER) });
 
-export async function GET() {
+/** Lists pages (optionally ?owner=0x...). Gallery and banner are dropped to keep the list light. */
+export async function GET(req: Request) {
   try {
-    return NextResponse.json({ pages: await listPages() });
+    const owner = new URL(req.url).searchParams.get("owner");
+    const pages = owner && isAddress(owner) ? await listPagesByOwner(owner) : await listPages();
+    return NextResponse.json({ pages: pages.map((p) => ({ ...p, gallery: [], bannerUrl: "" })) });
   } catch (e) {
     return serverError(e);
   }

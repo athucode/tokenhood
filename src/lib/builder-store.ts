@@ -18,10 +18,15 @@ const emptyDraft = (): MemePageDraft => ({
   tokenomics: { totalSupply: "1,000,000,000" },
   roadmap: ["Launch", "Raid the timeline", "List on a tracker"],
   gallery: [],
+  textBefore: "",
+  textAfter: "",
 });
 
 interface BuilderState {
   draft: MemePageDraft;
+  /** Slug of the published page being edited, or null when creating a new one. */
+  editing: string | null;
+  load: (draft: MemePageDraft, slug: string) => void;
   patch: (p: Partial<MemePageDraft>) => void;
   setTheme: (p: Partial<Theme>) => void;
   setTemplate: (id: string) => void;
@@ -30,9 +35,11 @@ interface BuilderState {
 
 export const useBuilder = create<BuilderState>((set) => ({
   draft: emptyDraft(),
+  editing: null,
+  load: (draft, slug) => set({ draft: { ...emptyDraft(), ...draft }, editing: slug }),
   patch: (p) => set((s) => ({ draft: { ...s.draft, ...p } })),
   setTheme: (p) => set((s) => ({ draft: { ...s.draft, theme: { ...s.draft.theme, ...p } } })),
   // Switching template also loads that template's default colors.
   setTemplate: (id) => set((s) => ({ draft: { ...s.draft, templateId: id, theme: getTemplate(id)?.defaultTheme ?? s.draft.theme } })),
-  reset: () => set({ draft: emptyDraft() }),
+  reset: () => set({ draft: emptyDraft(), editing: null }),
 }));

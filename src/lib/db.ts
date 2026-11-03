@@ -50,6 +50,27 @@ export async function isTxUsed(txHash: string): Promise<boolean> {
   return rows.length > 0;
 }
 
+export async function listPagesByOwner(owner: string): Promise<MemePage[]> {
+  const o = owner.toLowerCase();
+  if (!useSupabase) return [...mem.values()].filter((p) => p.owner.toLowerCase() === o);
+  const rows: Row[] = await sb(`meme_pages?select=*&owner=ilike.${encodeURIComponent(o)}&order=created_at.desc&limit=100`);
+  return rows.map(fromRow);
+}
+
+/** Replaces a page's content (slug, owner, payment and score stay as stored). */
+export async function updatePage(page: MemePage): Promise<MemePage> {
+  if (!useSupabase) {
+    mem.set(page.slug, page);
+    return page;
+  }
+  const [row]: Row[] = await sb(`meme_pages?slug=eq.${encodeURIComponent(page.slug)}`, {
+    method: "PATCH",
+    body: JSON.stringify({ data: page }),
+  });
+  if (!row) throw new Error("Page not found.");
+  return fromRow(row);
+}
+
 export async function insertPage(page: MemePage): Promise<MemePage> {
   if (!useSupabase) {
     mem.set(page.slug, page);

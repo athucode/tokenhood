@@ -93,6 +93,10 @@ export function SitePreview({ page }: { page: MemePageDraft }) {
           </section>
         )}
 
+        {page.textBefore?.trim() && (
+          <section className="whitespace-pre-line border-2 p-4 leading-relaxed" style={box}>{page.textBefore}</section>
+        )}
+
         {has("gallery") && (
           <section className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {page.gallery.length === 0 && <p className="col-span-full opacity-70">Add image links to fill the wall.</p>}
@@ -101,6 +105,10 @@ export function SitePreview({ page }: { page: MemePageDraft }) {
               <img key={i} src={src} alt={`${page.tokenName} meme ${i + 1}`} className="aspect-square w-full border-2 object-cover" style={{ borderColor: t.accent }} />
             ))}
           </section>
+        )}
+
+        {page.textAfter?.trim() && (
+          <section className="whitespace-pre-line border-2 p-4 leading-relaxed" style={box}>{page.textAfter}</section>
         )}
 
         {(has("socials") || page.links.length > 0) && (socials.length > 0 || page.links.length > 0) && (

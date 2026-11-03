@@ -53,3 +53,6 @@ export const isAdmin = (addr?: string | null) => Boolean(addr) && ADMIN_ADDRESSE
 /** Admin publish is signed with a timestamp so a signature can't be replayed later. */
 export const adminPublishMessage = (slug: string, ts: number) => `Tokenhood admin: publish "${slug}" at ${ts}`;
 export const ADMIN_SIG_TTL_MS = 10 * 60 * 1000;
+
+/** Owner (or admin) edit, also timestamped against replay. */
+export const editMessage = (slug: string, ts: number) => `Tokenhood: edit "${slug}" at ${ts}`;

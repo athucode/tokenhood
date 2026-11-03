@@ -3,6 +3,9 @@ import { Builder } from "@/components/Builder";
 
 export const metadata: Metadata = { title: "Build a meme site" };
 
-export default function BuilderPage() {
-  return <main><Builder /></main>;
+type Props = { searchParams: Promise<{ edit?: string }> };
+
+export default async function BuilderPage({ searchParams }: Props) {
+  const { edit } = await searchParams;
+  return <main><Builder editSlug={edit || undefined} /></main>;
 }

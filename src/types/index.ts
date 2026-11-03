@@ -79,6 +79,9 @@ export interface MemePage {
   tokenomics: Tokenomics;
   roadmap: string[];
   gallery: string[];
+  /** Free text shown before / after the gallery spot. Optional for pages made before this existed. */
+  textBefore?: string;
+  textAfter?: string;
   owner: Hex;
   paymentTxHash: Hex;
   status: "draft" | "published";

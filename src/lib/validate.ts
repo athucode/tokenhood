@@ -5,6 +5,9 @@ export const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,30}[a-z0-9]$/;
 const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
 const RESERVED = new Set(["www", "app", "api", "admin", "builder", "feed", "p", "static"]);
 export const MAX_IMAGE_CHARS = 400_000; // ~300 KB as base64
+/** Uploaded gallery images are smaller so 12 of them fit in one request (Vercel caps bodies at 4.5 MB). */
+export const MAX_GALLERY_CHARS = 200_000; // ~150 KB as base64
+export const MAX_TEXT = 2000;
 
 export const isSafeUrl = (u: string) => {
   try {
@@ -31,6 +34,8 @@ export function validateDraft(d: MemePageDraft): string[] {
   for (const u of Object.values(d.socials)) if (u && !isSafeUrl(u)) e.push("Social links must start with https://");
   if (d.links.length > 6 || d.links.some((l) => !l.label.trim() || !isSafeUrl(l.url))) e.push("Custom links need a label and an https URL (max 6).");
   if (d.roadmap.length > 8) e.push("Roadmap supports up to 8 steps.");
-  if (d.gallery.length > 12 || d.gallery.some((u) => !(u.startsWith("https://") && isSafeUrl(u)))) e.push("Gallery supports up to 12 https image links.");
+  const okGallery = (u: string) => (u.startsWith("data:image/") && u.length <= MAX_GALLERY_CHARS) || (u.startsWith("https://") && isSafeUrl(u));
+  if (d.gallery.length > 12 || !d.gallery.every(okGallery)) e.push("Gallery supports up to 12 images (uploads or https links).");
+  if ((d.textBefore ?? "").length > MAX_TEXT || (d.textAfter ?? "").length > MAX_TEXT) e.push(`Text blocks are limited to ${MAX_TEXT} characters each.`);
   return Array.from(new Set(e));
 }

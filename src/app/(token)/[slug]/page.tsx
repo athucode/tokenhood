@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { SitePreview } from "@/components/SitePreview";
+import { OwnerEditButton } from "@/components/OwnerEditButton";
 import { getPageBySlug } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -36,6 +37,7 @@ export default async function MemeSite({ params }: Props) {
   return (
     <div className="flex min-h-screen flex-col" style={{ background: t.background, color: t.text }}>
       <main className="flex-1"><SitePreview page={page} /></main>
+      <OwnerEditButton slug={page.slug} owner={page.owner} />
       <footer className="border-t-2" style={{ borderColor: t.accent, background: t.surface }}>
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-2 px-4 py-6 text-center text-xs sm:flex-row sm:justify-between sm:text-left">
           <p className="font-display text-base">
