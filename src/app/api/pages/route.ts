@@ -11,7 +11,17 @@ export const dynamic = "force-dynamic";
 const client = createPublicClient({ chain: HOOD_CHAIN, transport: http(process.env.BASE_RPC_URL || undefined) });
 
 export async function GET() {
-  return NextResponse.json({ pages: await listPages() });
+  try {
+    return NextResponse.json({ pages: await listPages() });
+  } catch (e) {
+    return serverError(e);
+  }
+}
+
+/** Always answer with JSON so the client can show the real cause (e.g. a Supabase error). */
+function serverError(e: unknown) {
+  console.error("[api/pages]", e);
+  return NextResponse.json({ error: e instanceof Error ? e.message : "Server error." }, { status: 500 });
 }
 
 /**
@@ -22,6 +32,14 @@ export async function GET() {
  *  4. make sure the slug and tx hash are unused, then store.
  */
 export async function POST(req: Request) {
+  try {
+    return await handlePost(req);
+  } catch (e) {
+    return serverError(e);
+  }
+}
+
+async function handlePost(req: Request) {
   let body: { draft: MemePageDraft; txHash: Hex; payer: Hex; signature: Hex; adminTs?: number };
   try {
     body = await req.json();

@@ -25,9 +25,11 @@ export function PublishPanel({ draft }: { draft: MemePageDraft }) {
 
   async function submit(body: object) {
     const res = await fetch("/api/pages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.error ?? "Publish failed.");
-    router.push(`/${json.page.slug}`);
+    const text = await res.text();
+    let json: { error?: string; page?: { slug: string } } = {};
+    try { json = JSON.parse(text); } catch { /* non-JSON body */ }
+    if (!res.ok || !json.page) throw new Error(json.error ?? `Publish failed (HTTP ${res.status}).`);
+    router.push(`/${json.page!.slug}`);
   }
 
   async function publishAdmin() {
