@@ -6,6 +6,7 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       "@react-native-async-storage/async-storage": false,
+      "@x402/evm": false,
     };
     return config;
   },
