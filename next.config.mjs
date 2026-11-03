@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  webpack: (config) => {
+  webpack: (config, { webpack }) => {
     config.externals.push("pino-pretty", "lokijs", "encoding");
     config.resolve.alias = {
       ...config.resolve.alias,
       "@react-native-async-storage/async-storage": false,
-      "@x402/evm": false,
     };
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^@x402\// }));
     return config;
   },
 };
