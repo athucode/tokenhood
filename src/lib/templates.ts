@@ -11,7 +11,7 @@ export const TEMPLATES: Template[] = [
     name: "Street Tag",
     tagline: "Poster layout. Big centered name, token ticket front and center.",
     layout: "poster",
-    priceHood: 50_000,
+    priceHood: 10_000,
     defaultTheme: getPalette("hood-classic")!.theme,
   },
   {
@@ -19,7 +19,7 @@ export const TEMPLATES: Template[] = [
     name: "Full Block",
     tagline: "Split layout. Story on the left, token ticket on the right.",
     layout: "split",
-    priceHood: 50_000,
+    priceHood: 10_000,
     defaultTheme: getPalette("banana")!.theme,
   },
   {
@@ -27,7 +27,7 @@ export const TEMPLATES: Template[] = [
     name: "Gallery Wall",
     tagline: "Meme-first. Your images lead, token ticket right after.",
     layout: "gallery",
-    priceHood: 50_000,
+    priceHood: 10_000,
     defaultTheme: getPalette("forest-night")!.theme,
   },
 ];
