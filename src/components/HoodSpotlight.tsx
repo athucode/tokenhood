@@ -1,59 +1,63 @@
 import { HOOD_INFO, isHoodLive } from "@/lib/hood-info";
+import { explorerTokenUrl, uniswapUrl } from "@/lib/hood";
 import { CopyButton } from "./CopyButton";
-import { buyUrl } from "@/lib/hood";
 
-/** Featured $HOOD token block on the homepage. Values live in lib/hood-info.ts. */
+/** The $HOOD token card used as the homepage hero visual. Values live in lib/hood-info.ts. */
 export function HoodSpotlight() {
   const { name, symbol, contractAddress, chainName, deployer, x } = HOOD_INFO;
   const rows: [string, React.ReactNode][] = [
     ["Name", name],
     ["Symbol", `$${symbol}`],
     ["Chain", chainName],
-    ["Deployed by", deployer.url
-      ? <a href={deployer.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-spray">{deployer.name}</a>
-      : deployer.name],
-    ["X", <a key="x" href={x.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-tag">{x.handle}</a>],
+    ["Deployed by", deployer.url ? <a href={deployer.url} target="_blank" rel="noopener noreferrer" className="underline decoration-curb underline-offset-4 hover:decoration-chalk">{deployer.name}</a> : deployer.name],
+    ["X", <a key="x" href={x.url} target="_blank" rel="noopener noreferrer" className="underline decoration-curb underline-offset-4 hover:decoration-chalk">{x.handle}</a>],
   ];
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-12">
-      <div className="relative border-2 border-caution bg-concrete p-6 shadow-[6px_6px_0_0_#FFD21F] sm:p-8">
-        <span className="absolute -top-4 left-6 bg-caution px-3 py-1 font-display text-sm tracking-wider text-asphalt">FEATURED TOKEN</span>
-        <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-          <div>
-            <h2 className="font-display text-5xl leading-none sm:text-6xl">
-              {name} <span className="text-spray">${symbol}</span>
-            </h2>
-            <p className="mt-4 max-w-md text-chalk/75">
-              ${symbol} is the currency of the block. Every Tokenhood site is paid in ${symbol}, so every new meme page puts the token to work.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              {isHoodLive && (
-                <a href={buyUrl(contractAddress)} target="_blank" rel="noopener noreferrer" className="btn-primary">
-                  Buy ${symbol}
-                </a>
-              )}
-              <a href={x.url} target="_blank" rel="noopener noreferrer" className="btn">Follow {x.handle}</a>
-            </div>
-          </div>
+    <div className="relative">
+      {/* faint orbit lines behind the card */}
+      <svg aria-hidden viewBox="0 0 400 400" className="pointer-events-none absolute -right-24 -top-24 -z-10 h-[30rem] w-[30rem] opacity-60">
+        {[70, 110, 150, 190].map((r, i) => (
+          <circle key={r} cx="200" cy="200" r={r} fill="none" stroke={i === 1 ? "#FF3EA5" : "#F4F4F2"} strokeOpacity={i === 1 ? 0.35 : 0.08} strokeWidth="1" />
+        ))}
+        <circle cx="310" cy="122" r="4" fill="#FF3EA5" />
+      </svg>
 
-          <dl className="divide-y-2 divide-curb border-2 border-curb bg-asphalt">
-            {rows.map(([k, v]) => (
-              <div key={k} className="flex items-center justify-between gap-4 px-4 py-3">
-                <dt className="text-sm text-chalk/50">{k}</dt>
-                <dd className="font-semibold">{v}</dd>
-              </div>
-            ))}
-            <div className="flex items-center justify-between gap-4 px-4 py-3">
-              <dt className="text-sm text-chalk/50">CA</dt>
-              <dd className="flex min-w-0 items-center gap-2">
-                <code className="break-all text-xs">{contractAddress}</code>
-                {isHoodLive && <CopyButton value={contractAddress} />}
-              </dd>
-            </div>
-          </dl>
+      <div className="overflow-hidden rounded-3xl border border-curb bg-concrete/90 backdrop-blur">
+        <div className="flex items-start justify-between gap-4 p-6 pb-5">
+          <div>
+            <p className="text-sm text-smoke">The token behind every site</p>
+            <p className="mt-1 text-5xl font-semibold tracking-[-0.04em]">${symbol}</p>
+          </div>
+          <span className="mt-1 inline-flex items-center gap-1.5 rounded-full border border-curb px-2.5 py-1 text-xs text-smoke">
+            <span className={`h-1.5 w-1.5 rounded-full ${isHoodLive ? "bg-[#3BE08A]" : "bg-smoke"}`} />
+            {isHoodLive ? "Live" : "Launching soon"}
+          </span>
         </div>
+
+        <dl className="divide-y divide-curb border-t border-curb text-sm">
+          {rows.map(([k, v]) => (
+            <div key={k} className="flex items-center justify-between gap-4 px-6 py-3">
+              <dt className="text-smoke">{k}</dt>
+              <dd className="text-right font-medium">{v}</dd>
+            </div>
+          ))}
+          <div className="px-6 py-4">
+            <dt className="mb-2 flex items-center justify-between text-smoke">
+              Contract
+              {isHoodLive && <CopyButton value={contractAddress} className="rounded-full border text-chalk" />}
+            </dt>
+            <dd className="break-all rounded-xl bg-asphalt px-3 py-2.5 font-mono text-[13px] leading-relaxed">{contractAddress}</dd>
+          </div>
+        </dl>
+
+        {isHoodLive && (
+          <div className="grid grid-cols-[1fr_auto] gap-2 border-t border-curb p-4">
+            <a href={uniswapUrl(contractAddress)} target="_blank" rel="noopener noreferrer" className="btn-primary">Buy ${symbol} on Uniswap</a>
+            <a href={explorerTokenUrl(contractAddress)} target="_blank" rel="noopener noreferrer" className="btn">Explorer</a>
+          </div>
+        )}
       </div>
-    </section>
+    </div>
   );
 }

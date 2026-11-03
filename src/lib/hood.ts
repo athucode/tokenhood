@@ -9,15 +9,14 @@ export const HOOD_CHAIN = robinhood;
 export const HOOD_RPC_PUBLIC = process.env.NEXT_PUBLIC_RPC_URL || process.env.NEXT_PUBLIC_BASE_RPC_URL || undefined;
 export const HOOD_RPC_SERVER = process.env.RPC_URL || process.env.BASE_RPC_URL || HOOD_RPC_PUBLIC;
 
-/**
- * Where "Buy" buttons send people. Set NEXT_PUBLIC_SWAP_URL to your DEX link with {ca}
- * as the token placeholder, e.g. https://your-dex.xyz/swap?outputCurrency={ca}.
- * Without it the button opens the token on the block explorer.
- */
-const SWAP_URL = process.env.NEXT_PUBLIC_SWAP_URL || "";
+/** Uniswap's chain name for Robinhood Chain in app.uniswap.org links. */
+const UNISWAP_CHAIN = "robinhood";
+export const uniswapUrl = (ca: string) => `https://app.uniswap.org/swap?chain=${UNISWAP_CHAIN}&outputCurrency=${ca}`;
 export const explorerTokenUrl = (ca: string) => `${HOOD_CHAIN.blockExplorers.default.url}/token/${ca}`;
-export const buyUrl = (ca: string) => (SWAP_URL ? SWAP_URL.replaceAll("{ca}", ca) : explorerTokenUrl(ca));
-export const hasSwapUrl = Boolean(SWAP_URL);
+
+/** Optional override for the Buy button: NEXT_PUBLIC_SWAP_URL with {ca} as the token placeholder. */
+const SWAP_URL = process.env.NEXT_PUBLIC_SWAP_URL || "";
+export const buyUrl = (ca: string) => (SWAP_URL ? SWAP_URL.replaceAll("{ca}", ca) : uniswapUrl(ca));
 
 const ZERO = "0x0000000000000000000000000000000000000000" as Hex;
 
@@ -56,3 +55,6 @@ export const ADMIN_SIG_TTL_MS = 10 * 60 * 1000;
 
 /** Owner (or admin) edit, also timestamped against replay. */
 export const editMessage = (slug: string, ts: number) => `Tokenhood: edit "${slug}" at ${ts}`;
+
+/** Admin-only delete, timestamped like the others. */
+export const deleteMessage = (slug: string, ts: number) => `Tokenhood admin: delete "${slug}" at ${ts}`;

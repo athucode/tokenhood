@@ -3,7 +3,7 @@ import { Anton, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
-const display = Anton({ weight: "400", subsets: ["latin"], variable: "--font-display" });
+const display = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
 const body = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-body" });
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: { default: "Tokenhood: meme sites paid in $HOOD", template: "%s | Tokenhood" },
   description: "Launch a website for your meme or token in minutes. Pay once in $HOOD, share your page.",
 };
-export const viewport: Viewport = { themeColor: "#17181C" };
+export const viewport: Viewport = { themeColor: "#000000" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

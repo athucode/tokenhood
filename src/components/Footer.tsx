@@ -1,65 +1,51 @@
 import Link from "next/link";
 import { HOOD_INFO, isHoodLive } from "@/lib/hood-info";
+import { explorerTokenUrl, uniswapUrl } from "@/lib/hood";
 import { CopyButton } from "./CopyButton";
+import { Mark } from "./Header";
 
 const NAV = [
-  { href: "/", label: "Home" },
   { href: "/builder", label: "Build a site" },
   { href: "/feed", label: "Feed" },
 ];
 
 export function Footer() {
   const { name, symbol, contractAddress, chainName, deployer, x, telegram } = HOOD_INFO;
+  const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
+  const link = "text-smoke transition-colors hover:text-chalk";
+
   return (
-    <footer className="relative mt-10 border-t-2 border-curb bg-concrete/40">
-      {/* spray stripe */}
-      <div className="h-1.5 w-full bg-[repeating-linear-gradient(135deg,#FFD21F_0_14px,#17181C_14px_28px)]" />
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-[1.4fr_1fr_1fr]">
-        <div>
-          <Link href="/" className="font-display text-3xl tracking-wide">
-            TOKEN<span className="text-spray">HOOD</span>
-          </Link>
-          <p className="mt-3 max-w-xs text-sm text-chalk/70">
-            Meme and token websites, paid once in ${symbol}. No code, no hosting bill.
-          </p>
-          <a href={x.url} target="_blank" rel="noopener noreferrer" className="btn mt-5 text-sm hover:border-tag hover:text-tag">
-            Follow {x.handle} on X
-          </a>
+    <footer className="border-t border-curb">
+      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-14 md:grid-cols-[1fr_auto_auto] md:gap-20">
+        <div className="max-w-sm">
+          <Link href="/" className="flex items-center gap-2 text-[17px] font-semibold tracking-tight"><Mark /> Tokenhood</Link>
+          <p className="mt-4 text-sm leading-relaxed text-smoke">Token websites paid once in ${symbol}, on {chainName}.</p>
         </div>
 
-        <div>
-          <h3 className="font-display text-lg text-tag">Explore</h3>
-          <ul className="mt-3 space-y-2 text-sm">
-            {NAV.map((n) => (
-              <li key={n.href}><Link href={n.href} className="text-chalk/80 hover:text-spray">{n.label}</Link></li>
-            ))}
-            {telegram && <li><a href={telegram} target="_blank" rel="noopener noreferrer" className="text-chalk/80 hover:text-spray">Telegram</a></li>}
+        <nav aria-label="Tokenhood" className="text-sm">
+          <ul className="space-y-2.5">
+            {NAV.map((n) => <li key={n.href}><Link href={n.href} className={link}>{n.label}</Link></li>)}
           </ul>
-        </div>
+        </nav>
 
-        <div>
-          <h3 className="font-display text-lg text-tag">${symbol}</h3>
-          <dl className="mt-3 space-y-2 text-sm">
-            <div className="flex gap-2"><dt className="text-chalk/50">Name</dt><dd>{name}</dd></div>
-            <div className="flex gap-2"><dt className="text-chalk/50">Chain</dt><dd>{chainName}</dd></div>
-            <div className="flex items-center gap-2">
-              <dt className="text-chalk/50">CA</dt>
-              <dd className="flex min-w-0 items-center gap-2">
-                <code className="truncate text-xs">{contractAddress}</code>
-                {isHoodLive && <CopyButton value={contractAddress} />}
-              </dd>
-            </div>
-          </dl>
-        </div>
+        <ul className="space-y-2.5 text-sm">
+          <li><a href={x.url} {...ext} className={link}>X {x.handle}</a></li>
+          {telegram && <li><a href={telegram} {...ext} className={link}>Telegram</a></li>}
+          {isHoodLive && <li><a href={uniswapUrl(contractAddress)} {...ext} className={link}>Buy on Uniswap</a></li>}
+          {isHoodLive && <li><a href={explorerTokenUrl(contractAddress)} {...ext} className={link}>Explorer</a></li>}
+        </ul>
       </div>
-      <div className="border-t-2 border-curb">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-4 text-xs text-chalk/50 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-          <p>
-            ${symbol} deployed by{" "}
-            {deployer.url
-              ? <a href={deployer.url} target="_blank" rel="noopener noreferrer" className="text-caution hover:underline">{deployer.name}</a>
-              : <span className="text-caution">{deployer.name}</span>}
+
+      <div className="border-t border-curb">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-6 text-xs text-smoke md:flex-row md:items-center md:justify-between">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            <span>${symbol} contract</span>
+            <code className="break-all font-mono text-chalk/80">{contractAddress}</code>
+            {isHoodLive && <CopyButton value={contractAddress} className="rounded-full border text-chalk" />}
+          </div>
+          <p className="shrink-0">
+            © {new Date().getFullYear()} {name}. Deployed by{" "}
+            {deployer.url ? <a href={deployer.url} {...ext} className="text-chalk/80 hover:text-chalk">{deployer.name}</a> : <span className="text-chalk/80">{deployer.name}</span>}
           </p>
         </div>
       </div>

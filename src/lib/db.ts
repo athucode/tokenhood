@@ -1,4 +1,3 @@
-import { SEED_PAGES } from "./seed";
 import type { MemePage } from "@/types";
 
 /**
@@ -38,9 +37,9 @@ export async function listPages(): Promise<MemePage[]> {
 }
 
 export async function getPageBySlug(slug: string): Promise<MemePage | null> {
-  if (!useSupabase) return mem.get(slug) ?? SEED_PAGES.find((p) => p.slug === slug) ?? null;
+  if (!useSupabase) return mem.get(slug) ?? null;
   const rows: Row[] = await sb(`meme_pages?select=*&slug=eq.${encodeURIComponent(slug)}&limit=1`);
-  return rows[0] ? fromRow(rows[0]) : SEED_PAGES.find((p) => p.slug === slug) ?? null;
+  return rows[0] ? fromRow(rows[0]) : null;
 }
 
 export async function isTxUsed(txHash: string): Promise<boolean> {
@@ -69,6 +68,12 @@ export async function updatePage(page: MemePage): Promise<MemePage> {
   });
   if (!row) throw new Error("Page not found.");
   return fromRow(row);
+}
+
+export async function deletePage(slug: string): Promise<boolean> {
+  if (!useSupabase) return mem.delete(slug);
+  const rows: Row[] = await sb(`meme_pages?slug=eq.${encodeURIComponent(slug)}`, { method: "DELETE" });
+  return rows.length > 0;
 }
 
 export async function insertPage(page: MemePage): Promise<MemePage> {

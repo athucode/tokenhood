@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createPublicClient, http, isAddress, isAddressEqual } from "viem";
-import { getPageBySlug, updatePage } from "@/lib/db";
-import { ADMIN_SIG_TTL_MS, HOOD_CHAIN, HOOD_RPC_SERVER, editMessage, isAdmin } from "@/lib/hood";
+import { deletePage, getPageBySlug, updatePage } from "@/lib/db";
+import { ADMIN_SIG_TTL_MS, HOOD_CHAIN, HOOD_RPC_SERVER, deleteMessage, editMessage, isAdmin } from "@/lib/hood";
 import { getTemplate } from "@/lib/templates";
 import { validateDraft } from "@/lib/validate";
 import type { Hex, MemePage, MemePageDraft } from "@/types";
@@ -63,6 +63,32 @@ export async function PUT(req: Request, { params }: Ctx) {
     return NextResponse.json({ page: await updatePage(updated) });
   } catch (e) {
     console.error("[api/pages/slug]", e);
+    return fail(e instanceof Error ? e.message : "Server error.", 500);
+  }
+}
+
+/** Admin-only: removes a page. Body: { admin, signature, ts } signed as `delete "<slug>" at <ts>`. */
+export async function DELETE(req: Request, { params }: Ctx) {
+  try {
+    const slug = (await params).slug;
+    let body: { admin: Hex; signature: Hex; ts: number };
+    try {
+      body = await req.json();
+    } catch {
+      return fail("Invalid JSON.", 400);
+    }
+    const { admin, signature, ts } = body;
+    if (!isAddress(admin) || !signature || !Number.isFinite(ts)) return fail("Missing delete details.", 400);
+    if (!isAdmin(admin)) return fail("Only an admin can delete pages.", 403);
+    if (Math.abs(Date.now() - ts) > ADMIN_SIG_TTL_MS) return fail("Signature expired. Sign again.", 401);
+
+    const signedOk = await client.verifyMessage({ address: admin, message: deleteMessage(slug, ts), signature });
+    if (!signedOk) return fail("Signature does not match the admin wallet.", 401);
+
+    if (!(await deletePage(slug))) return fail("Page not found.", 404);
+    return NextResponse.json({ deleted: slug });
+  } catch (e) {
+    console.error("[api/pages/slug DELETE]", e);
     return fail(e instanceof Error ? e.message : "Server error.", 500);
   }
 }

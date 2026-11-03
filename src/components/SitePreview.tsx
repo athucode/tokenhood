@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { AtSign, Globe, Link2, MessagesSquare, Send } from "lucide-react";
 import type { LayoutId, MemePageDraft } from "@/types";
 import { getTemplate, DEFAULT_TEMPLATE } from "@/lib/templates";
-import { HOOD_CHAIN, buyUrl, hasSwapUrl } from "@/lib/hood";
+import { HOOD_CHAIN, buyUrl, explorerTokenUrl } from "@/lib/hood";
 import { onColor } from "@/lib/palettes";
 import { CopyButton } from "./CopyButton";
 
@@ -22,6 +22,7 @@ export function SitePreview({ page }: { page: MemePageDraft }) {
     "--a2": t.accent2,
     "--on-ac": onColor(t.accent, t),
     "--on-a2": onColor(t.accent2, t),
+    "--font-display": "var(--font-anton)",
     background: t.background,
     color: t.text,
   } as CSSProperties;
@@ -174,16 +175,15 @@ function TokenTicket({ page, ticker }: { page: MemePageDraft; ticker: string }) 
         </div>
 
         <dl className="space-y-4 px-6 pb-6 pt-6 text-sm">
-          <Row label="Contract">
-            {ca ? (
-              <span className="flex min-w-0 items-center gap-2">
-                <code title={ca} className="truncate font-semibold">{short(ca)}</code>
-                <CopyButton value={ca} className="shrink-0 rounded-full" />
-              </span>
-            ) : (
-              <span className="opacity-60">Coming soon</span>
-            )}
-          </Row>
+          <div>
+            <dt className="mb-1.5 flex items-center justify-between gap-3 opacity-60">
+              Contract
+              {ca && <span className="opacity-100" style={{ color: "var(--tx)" }}><CopyButton value={ca} className="rounded-full" /></span>}
+            </dt>
+            <dd className="break-all rounded-xl px-3 py-2.5 font-mono text-[13px] font-semibold leading-snug" style={{ background: "color-mix(in srgb, var(--tx) 7%, transparent)" }}>
+              {ca || <span className="font-sans font-normal opacity-60">Coming soon</span>}
+            </dd>
+          </div>
           <Row label="Chain">
             <span className="flex items-center gap-2 font-semibold"><ChainGlyph /> {HOOD_CHAIN.name}</span>
           </Row>
@@ -191,11 +191,16 @@ function TokenTicket({ page, ticker }: { page: MemePageDraft; ticker: string }) 
         </dl>
 
         {ca && (
-          <div className="px-6 pb-6">
+          <div className="grid grid-cols-[1fr_auto] gap-2 px-6 pb-6">
             <a href={buyUrl(ca)} target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-base font-bold transition-transform active:scale-[0.98]"
               style={{ background: "var(--ac)", color: "var(--on-ac)" }}>
-              {hasSwapUrl ? `Buy $${ticker}` : "View on explorer"}
+              Buy ${ticker} on Uniswap
+            </a>
+            <a href={explorerTokenUrl(ca)} target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-center rounded-2xl px-4 py-4 text-sm font-semibold"
+              style={{ boxShadow: "inset 0 0 0 2px color-mix(in srgb, var(--tx) 25%, transparent)" }}>
+              Explorer
             </a>
           </div>
         )}
@@ -330,8 +335,6 @@ function tileClass(i: number, n: number, featured: boolean) {
 }
 
 /* ---------- helpers ---------- */
-
-const short = (a: string) => (a.length > 14 ? `${a.slice(0, 6)}…${a.slice(-4)}` : a);
 
 function hash(s: string) {
   let h = 2166136261;

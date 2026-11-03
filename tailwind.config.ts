@@ -6,10 +6,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        asphalt: "#17181C", // page background
-        concrete: "#25272D", // cards
-        curb: "#3A3D45", // borders
-        chalk: "#F1EEE4", // text
+        asphalt: "#000000", // page background
+        concrete: "#0E0E10", // cards
+        curb: "#222226", // borders
+        chalk: "#F4F4F2", // text
+        smoke: "#8B8B90", // secondary text
         spray: "#FF3EA5", // primary accent (spray-paint magenta)
         tag: "#3DE3FF", // secondary accent (tag cyan)
         caution: "#FFD21F", // warnings / prices
