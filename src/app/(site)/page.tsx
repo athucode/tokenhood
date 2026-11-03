@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Feed } from "@/components/Feed";
 import { HeroTag } from "@/components/HeroTag";
+import { HoodSpotlight } from "@/components/HoodSpotlight";
 import { TEMPLATES } from "@/lib/templates";
 
 const STEPS = [
-  ["Pick a template", "Three layouts built for memes and tokens."],
+  ["Pick a template", "Three layouts built for memes and tokens, same price."],
   ["Fill in your token", "Name, ticker, contract, links, colors. The preview updates as you type."],
   ["Pay in $HOOD", "One transfer from your wallet. Your page goes live right after."],
 ];
@@ -23,6 +24,8 @@ export default function Home() {
         </div>
         <HeroTag />
       </section>
+
+      <HoodSpotlight />
 
       <section className="border-y-2 border-curb bg-concrete/50">
         <div className="mx-auto grid max-w-6xl gap-6 px-4 py-12 md:grid-cols-3">

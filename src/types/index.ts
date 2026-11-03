@@ -56,8 +56,9 @@ export interface CustomLink {
 
 export interface Tokenomics {
   totalSupply: string;
-  buyTax: string;
-  sellTax: string;
+  /** Legacy fields, no longer edited or shown. */
+  buyTax?: string;
+  sellTax?: string;
 }
 
 export interface MemePage {

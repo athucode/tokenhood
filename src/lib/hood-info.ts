@@ -1,0 +1,17 @@
+/**
+ * Public info about the $HOOD token, shown on the homepage and footer.
+ * Edit these values when the token launches.
+ */
+export const HOOD_INFO = {
+  name: "TokenHood",
+  symbol: "HOOD",
+  /** Contract address. Leave "0x..." until the token is live. */
+  contractAddress: "0x...",
+  chainName: "Base",
+  /** Platform that deployed the token. url is optional (leave "" to show plain text). */
+  deployer: { name: "Ponsfamily", url: "" },
+  x: { handle: "@TokenHood", url: "https://x.com/TokenHood" },
+  telegram: "",
+};
+
+export const isHoodLive = /^0x[0-9a-fA-F]{40}$/.test(HOOD_INFO.contractAddress);

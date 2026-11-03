@@ -77,7 +77,7 @@ export function Builder() {
           <div className="flex items-center gap-2">
             <input className="input" value={draft.slug} maxLength={32} onChange={(e) => patch({ slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "") })} placeholder="corner-cat" />
           </div>
-          <span className="text-xs text-chalk/60">{ROOT_DOMAIN}/p/{draft.slug || "your-name"}</span>
+          <span className="text-xs text-chalk/60">{ROOT_DOMAIN}/{draft.slug || "your-name"}</span>
         </Field>
       </section>
 
@@ -105,13 +105,9 @@ export function Builder() {
 
       <section className="space-y-3">
         <h2 className="font-display text-xl">4. Content</h2>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {(["totalSupply", "buyTax", "sellTax"] as const).map((k) => (
-            <Field key={k} label={k === "totalSupply" ? "Total supply" : k === "buyTax" ? "Buy tax" : "Sell tax"}>
-              <input className="input" value={draft.tokenomics[k]} onChange={(e) => patch({ tokenomics: { ...draft.tokenomics, [k]: e.target.value } })} />
-            </Field>
-          ))}
-        </div>
+        <Field label="Total supply">
+          <input className="input" value={draft.tokenomics.totalSupply} onChange={(e) => patch({ tokenomics: { ...draft.tokenomics, totalSupply: e.target.value } })} />
+        </Field>
         <Field label="Roadmap (one step per line, max 8)">
           <textarea className="input min-h-24" value={draft.roadmap.join("\n")} onChange={(e) => patch({ roadmap: e.target.value.split("\n").slice(0, 8) })} />
         </Field>

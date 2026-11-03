@@ -18,7 +18,7 @@ const mk = (i: number, slug: string, name: string, ticker: string, tagline: stri
   theme: TEMPLATES[tpl].defaultTheme,
   socials: { telegram: "", twitter: "", discord: "", website: "" },
   links: [],
-  tokenomics: { totalSupply: "1,000,000,000", buyTax: "0%", sellTax: "0%" },
+  tokenomics: { totalSupply: "1,000,000,000" },
   roadmap: ["Launch the page", "Raid the timeline", "Get on the hood leaderboard"],
   gallery: [],
   owner: ZERO,

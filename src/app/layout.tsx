@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Anton, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import { Header } from "@/components/Header";
 
 const display = Anton({ weight: "400", subsets: ["latin"], variable: "--font-display" });
 const body = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-body" });
@@ -18,10 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body>
-        <Providers>
-          <Header />
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

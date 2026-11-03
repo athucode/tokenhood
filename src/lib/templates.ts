@@ -10,15 +10,15 @@ export const TEMPLATES: Template[] = [
     name: "Street Tag",
     tagline: "One screen: logo, buy button, socials. Fast and cheap.",
     sections: ["hero", "buy", "socials"],
-    priceHood: 500,
+    priceHood: 50_000,
     defaultTheme: streetTheme,
   },
   {
     id: "full-block",
     name: "Full Block",
-    tagline: "Everything a token needs: tokenomics, roadmap, buy widget, socials.",
+    tagline: "Everything a token needs: supply, roadmap, buy widget, socials.",
     sections: ["hero", "buy", "tokenomics", "roadmap", "socials"],
-    priceHood: 1500,
+    priceHood: 50_000,
     defaultTheme: cautionTheme,
   },
   {
@@ -26,7 +26,7 @@ export const TEMPLATES: Template[] = [
     name: "Gallery Wall",
     tagline: "Meme-first. A wall of your best images with socials underneath.",
     sections: ["hero", "gallery", "socials"],
-    priceHood: 800,
+    priceHood: 50_000,
     defaultTheme: wallTheme,
   },
 ];

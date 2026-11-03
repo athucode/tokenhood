@@ -4,7 +4,7 @@ import { CopyButton } from "./CopyButton";
 
 /**
  * Renders a meme site from a draft or a published page.
- * Server-safe (no hooks) so it's used by both the builder preview and /p/[slug].
+ * Server-safe (no hooks) so it's used by both the builder preview and /[slug].
  * Colors come from the page theme, not from the Tokenhood palette.
  */
 export function SitePreview({ page }: { page: MemePageDraft }) {
@@ -71,14 +71,10 @@ export function SitePreview({ page }: { page: MemePageDraft }) {
         {has("tokenomics") && (
           <section className="border-2 p-4" style={box}>
             <h2 className="mb-3 font-display text-xl">Tokenomics</h2>
-            <dl className="grid grid-cols-3 gap-2 text-center">
-              {[["Supply", page.tokenomics.totalSupply], ["Buy tax", page.tokenomics.buyTax], ["Sell tax", page.tokenomics.sellTax]].map(([k, v]) => (
-                <div key={k} className="border-2 p-2" style={{ borderColor: t.accent2 }}>
-                  <dt className="text-xs opacity-70">{k}</dt>
-                  <dd className="font-display text-lg">{v || "-"}</dd>
-                </div>
-              ))}
-            </dl>
+            <div className="border-2 p-3 text-center" style={{ borderColor: t.accent2 }}>
+              <p className="text-xs opacity-70">Total supply</p>
+              <p className="font-display text-2xl">{page.tokenomics.totalSupply || "-"}</p>
+            </div>
           </section>
         )}
 

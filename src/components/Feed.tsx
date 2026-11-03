@@ -50,7 +50,7 @@ export function Feed({ limit }: { limit?: number }) {
               <span className="font-display text-lg">{p.respect}</span>
               <button aria-label={`Take respect from ${p.tokenName}`} aria-pressed={votes[p.slug] === -1} onClick={() => vote(p.slug, -1)} className={votes[p.slug] === -1 ? "text-tag" : "text-chalk/60 hover:text-chalk"}><ArrowBigDown /></button>
             </div>
-            <Link href={`/p/${p.slug}`} className="flex flex-1 items-center gap-3 p-3 hover:bg-curb/40">
+            <Link href={`/${p.slug}`} className="flex flex-1 items-center gap-3 p-3 hover:bg-curb/40">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center border-2 font-display" style={{ background: p.theme.surface, borderColor: p.theme.accent, color: p.theme.text }}>
                 {p.logoUrl ? /* eslint-disable-next-line @next/next/no-img-element */ <img src={p.logoUrl} alt="" className="h-full w-full object-cover" /> : p.ticker.slice(0, 3).toUpperCase()}
               </div>

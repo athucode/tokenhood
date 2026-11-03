@@ -15,7 +15,7 @@ const emptyDraft = (): MemePageDraft => ({
   theme: DEFAULT_TEMPLATE.defaultTheme,
   socials: { telegram: "", twitter: "", discord: "", website: "" },
   links: [],
-  tokenomics: { totalSupply: "1,000,000,000", buyTax: "0%", sellTax: "0%" },
+  tokenomics: { totalSupply: "1,000,000,000" },
   roadmap: ["Launch", "Raid the timeline", "List on a tracker"],
   gallery: [],
 });
