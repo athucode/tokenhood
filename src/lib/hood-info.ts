@@ -9,7 +9,7 @@ export const HOOD_INFO = {
   contractAddress: "0x......",
   chainName: "Robinhood",
   /** Platform that deployed the token. url is optional (leave "" to show plain text). */
-  deployer: { name: "Ponsfamily", url: "" },
+  deployer: { name: "Ponsfamily", url: "https://ponsfamily.com/launchpad/" },
   x: { handle: "@TokenHood", url: "https://x.com/TokenHood" },
   telegram: "",
 };
