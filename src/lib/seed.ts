@@ -12,7 +12,7 @@ const mk = (i: number, slug: string, name: string, ticker: string, tagline: stri
   ticker,
   tagline,
   contractAddress: "",
-  chain: "base",
+  chain: "robinhood",
   logoUrl: "",
   bannerUrl: "",
   theme: TEMPLATES[tpl].defaultTheme,

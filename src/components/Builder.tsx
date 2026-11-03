@@ -5,7 +5,7 @@ import { Plus, Trash2, Upload } from "lucide-react";
 import { useBuilder } from "@/lib/builder-store";
 import { TEMPLATES } from "@/lib/templates";
 import { MAX_IMAGE_CHARS } from "@/lib/validate";
-import { ROOT_DOMAIN } from "@/lib/hood";
+import { HOOD_CHAIN, ROOT_DOMAIN } from "@/lib/hood";
 import { SitePreview } from "./SitePreview";
 import { PublishPanel } from "./PublishPanel";
 import type { Theme } from "@/types";
@@ -72,7 +72,7 @@ export function Builder() {
           <Field label="Ticker"><input className="input" value={draft.ticker} maxLength={12} onChange={(e) => patch({ ticker: e.target.value.replace(/[^A-Za-z0-9]/g, "") })} placeholder="CCAT" /></Field>
         </div>
         <Field label="Tagline"><input className="input" value={draft.tagline} maxLength={140} onChange={(e) => patch({ tagline: e.target.value })} placeholder="The cat that owns the block." /></Field>
-        <Field label="Contract address (Base)"><input className="input font-mono text-xs" value={draft.contractAddress} onChange={(e) => patch({ contractAddress: e.target.value.trim() })} placeholder="0x..." /></Field>
+        <Field label={`Contract address (${HOOD_CHAIN.name})`}><input className="input font-mono text-xs" value={draft.contractAddress} onChange={(e) => patch({ contractAddress: e.target.value.trim() })} placeholder="0x..." /></Field>
         <Field label="Page address">
           <div className="flex items-center gap-2">
             <input className="input" value={draft.slug} maxLength={32} onChange={(e) => patch({ slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "") })} placeholder="corner-cat" />

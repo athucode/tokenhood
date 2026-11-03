@@ -1,6 +1,7 @@
 import type { MemePageDraft } from "@/types";
 import { getTemplate, DEFAULT_TEMPLATE } from "@/lib/templates";
 import { CopyButton } from "./CopyButton";
+import { HOOD_CHAIN, buyUrl, hasSwapUrl } from "@/lib/hood";
 
 /**
  * Renders a meme site from a draft or a published page.
@@ -53,13 +54,13 @@ export function SitePreview({ page }: { page: MemePageDraft }) {
                   <CopyButton value={ca} />
                 </div>
                 <a
-                  href={`https://app.uniswap.org/swap?chain=base&outputCurrency=${ca}`}
+                  href={buyUrl(ca)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block border-2 px-4 py-2 text-center font-semibold"
                   style={{ background: t.accent, color: t.background, borderColor: t.accent }}
                 >
-                  Swap on Base
+                  {hasSwapUrl ? `Buy on ${HOOD_CHAIN.name}` : "View on explorer"}
                 </a>
               </>
             ) : (

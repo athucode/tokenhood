@@ -9,7 +9,7 @@ const emptyDraft = (): MemePageDraft => ({
   ticker: "",
   tagline: "",
   contractAddress: "",
-  chain: "base",
+  chain: "robinhood",
   logoUrl: "",
   bannerUrl: "",
   theme: DEFAULT_TEMPLATE.defaultTheme,

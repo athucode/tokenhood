@@ -69,7 +69,7 @@ export interface MemePage {
   ticker: string;
   tagline: string;
   contractAddress: string;
-  chain: "base";
+  chain: "base" | "robinhood";
   /** https URL or small data: URL. */
   logoUrl: string;
   bannerUrl: string;

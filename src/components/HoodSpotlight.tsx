@@ -1,5 +1,6 @@
 import { HOOD_INFO, isHoodLive } from "@/lib/hood-info";
 import { CopyButton } from "./CopyButton";
+import { buyUrl } from "@/lib/hood";
 
 /** Featured $HOOD token block on the homepage. Values live in lib/hood-info.ts. */
 export function HoodSpotlight() {
@@ -28,7 +29,7 @@ export function HoodSpotlight() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {isHoodLive && (
-                <a href={`https://app.uniswap.org/swap?chain=base&outputCurrency=${contractAddress}`} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                <a href={buyUrl(contractAddress)} target="_blank" rel="noopener noreferrer" className="btn-primary">
                   Buy ${symbol}
                 </a>
               )}

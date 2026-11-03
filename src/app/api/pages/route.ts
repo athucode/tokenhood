@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { createPublicClient, http, isAddress, isAddressEqual, keccak256, parseEventLogs, erc20Abi, toHex } from "viem";
 import { getPageBySlug, insertPage, isTxUsed, listPages } from "@/lib/db";
-import { ADMIN_SIG_TTL_MS, HOOD_CHAIN, HOOD_TOKEN_ADDRESS, HOOD_TREASURY_ADDRESS, adminPublishMessage, isAdmin, isHoodConfigured, publishMessage, toHoodUnits } from "@/lib/hood";
+import { ADMIN_SIG_TTL_MS, HOOD_CHAIN, HOOD_RPC_SERVER, HOOD_TOKEN_ADDRESS, HOOD_TREASURY_ADDRESS, adminPublishMessage, isAdmin, isHoodConfigured, publishMessage, toHoodUnits } from "@/lib/hood";
 import { getTemplate } from "@/lib/templates";
 import { validateDraft } from "@/lib/validate";
 import type { Hex, MemePage, MemePageDraft } from "@/types";
 
 export const dynamic = "force-dynamic";
 
-const client = createPublicClient({ chain: HOOD_CHAIN, transport: http(process.env.BASE_RPC_URL || undefined) });
+const client = createPublicClient({ chain: HOOD_CHAIN, transport: http(HOOD_RPC_SERVER) });
 
 export async function GET() {
   try {

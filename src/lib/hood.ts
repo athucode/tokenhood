@@ -1,9 +1,23 @@
-import { base } from "wagmi/chains";
+import { robinhood } from "viem/chains";
 import { erc20Abi, parseUnits } from "viem";
 import type { Hex } from "@/types";
 
 /** Chain where $HOOD lives. Change here if the token moves. */
-export const HOOD_CHAIN = base;
+export const HOOD_CHAIN = robinhood;
+
+/** RPC for the HOOD chain (falls back to the chain's public RPC). Old BASE_* names still work. */
+export const HOOD_RPC_PUBLIC = process.env.NEXT_PUBLIC_RPC_URL || process.env.NEXT_PUBLIC_BASE_RPC_URL || undefined;
+export const HOOD_RPC_SERVER = process.env.RPC_URL || process.env.BASE_RPC_URL || HOOD_RPC_PUBLIC;
+
+/**
+ * Where "Buy" buttons send people. Set NEXT_PUBLIC_SWAP_URL to your DEX link with {ca}
+ * as the token placeholder, e.g. https://your-dex.xyz/swap?outputCurrency={ca}.
+ * Without it the button opens the token on the block explorer.
+ */
+const SWAP_URL = process.env.NEXT_PUBLIC_SWAP_URL || "";
+export const explorerTokenUrl = (ca: string) => `${HOOD_CHAIN.blockExplorers.default.url}/token/${ca}`;
+export const buyUrl = (ca: string) => (SWAP_URL ? SWAP_URL.replaceAll("{ca}", ca) : explorerTokenUrl(ca));
+export const hasSwapUrl = Boolean(SWAP_URL);
 
 const ZERO = "0x0000000000000000000000000000000000000000" as Hex;
 

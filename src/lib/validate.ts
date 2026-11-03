@@ -24,7 +24,7 @@ export function validateDraft(d: MemePageDraft): string[] {
   if (!d.tokenName.trim() || d.tokenName.length > 40) e.push("Token name is required (max 40 characters).");
   if (!/^[A-Za-z0-9]{1,12}$/.test(d.ticker)) e.push("Ticker must be 1-12 letters or numbers.");
   if (d.tagline.length > 140) e.push("Tagline is too long (max 140).");
-  if (d.contractAddress && !isAddress(d.contractAddress)) e.push("Contract address is not a valid Base address.");
+  if (d.contractAddress && !isAddress(d.contractAddress)) e.push("Contract address is not a valid EVM address.");
   if (d.logoUrl && !isImage(d.logoUrl)) e.push("Logo must be an uploaded image under 300 KB or an https link.");
   if (d.bannerUrl && !isImage(d.bannerUrl)) e.push("Banner must be an uploaded image under 300 KB or an https link.");
   for (const c of Object.values(d.theme)) if (!HEX_COLOR.test(c)) e.push("Colors must be hex values like #FF3EA5.");
