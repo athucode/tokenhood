@@ -1,33 +1,34 @@
-import type { Template, Theme } from "@/types";
+import type { Template } from "@/types";
+import { getPalette } from "./palettes";
 
-const streetTheme: Theme = { background: "#17181C", surface: "#25272D", text: "#F1EEE4", accent: "#FF3EA5", accent2: "#3DE3FF" };
-const cautionTheme: Theme = { background: "#FFD21F", surface: "#FFFFFF", text: "#17181C", accent: "#17181C", accent2: "#FF3EA5" };
-const wallTheme: Theme = { background: "#0F2A24", surface: "#17403A", text: "#F1EEE4", accent: "#B6FF3D", accent2: "#FF8A3D" };
-
+/**
+ * Templates only change the layout. Every template shows everything the user filled in:
+ * token info, buy button, supply, roadmap, texts, gallery and links.
+ */
 export const TEMPLATES: Template[] = [
   {
     id: "street-tag",
     name: "Street Tag",
-    tagline: "One screen: logo, buy button, socials. Fast and cheap.",
-    sections: ["hero", "buy", "socials"],
+    tagline: "Poster layout. Big centered name, token ticket front and center.",
+    layout: "poster",
     priceHood: 50_000,
-    defaultTheme: streetTheme,
+    defaultTheme: getPalette("hood-classic")!.theme,
   },
   {
     id: "full-block",
     name: "Full Block",
-    tagline: "Everything a token needs: supply, roadmap, buy widget, socials.",
-    sections: ["hero", "buy", "tokenomics", "roadmap", "socials"],
+    tagline: "Split layout. Story on the left, token ticket on the right.",
+    layout: "split",
     priceHood: 50_000,
-    defaultTheme: cautionTheme,
+    defaultTheme: getPalette("banana")!.theme,
   },
   {
     id: "gallery-wall",
     name: "Gallery Wall",
-    tagline: "Meme-first. A wall of your best images with socials underneath.",
-    sections: ["hero", "gallery", "socials"],
+    tagline: "Meme-first. Your images lead, token ticket right after.",
+    layout: "gallery",
     priceHood: 50_000,
-    defaultTheme: wallTheme,
+    defaultTheme: getPalette("forest-night")!.theme,
   },
 ];
 

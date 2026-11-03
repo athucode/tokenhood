@@ -11,7 +11,7 @@ import { SitePreview } from "./SitePreview";
 import { PublishPanel } from "./PublishPanel";
 import { EditPanel } from "./EditPanel";
 import { MyPages } from "./MyPages";
-import type { Theme } from "@/types";
+import { PALETTES, findPalette } from "@/lib/palettes";
 
 const Field = ({ label, children }: { label: string; children: ReactNode }) => (
   <label className="block space-y-1">
@@ -79,7 +79,7 @@ export function Builder({ editSlug }: { editSlug?: string }) {
     }
   };
 
-  const colorKeys: [keyof Theme, string][] = [["background", "Background"], ["surface", "Cards"], ["text", "Text"], ["accent", "Accent"], ["accent2", "Accent 2"]];
+  const currentPalette = findPalette(draft.theme);
 
   const form = (
     <div className="space-y-6">
@@ -125,13 +125,24 @@ export function Builder({ editSlug }: { editSlug?: string }) {
           ))}
         </div>
         {uploadError && <p className="text-sm text-spray">{uploadError}</p>}
-        <div className="grid grid-cols-5 gap-2">
-          {colorKeys.map(([k, label]) => (
-            <label key={k} className="space-y-1 text-center text-xs font-semibold">
-              {label}
-              <input type="color" value={draft.theme[k]} onChange={(e) => setTheme({ [k]: e.target.value } as Partial<Theme>)} className="h-10 w-full cursor-pointer border-2 border-curb bg-transparent" />
-            </label>
-          ))}
+        <div>
+          <p className="mb-2 text-sm font-semibold">Color set{currentPalette ? `: ${currentPalette.name}` : ""}</p>
+          <div className="grid grid-cols-4 gap-2 sm:grid-cols-5" role="radiogroup" aria-label="Color set">
+            {PALETTES.map((p) => {
+              const on = currentPalette?.id === p.id;
+              return (
+                <button key={p.id} type="button" role="radio" aria-checked={on} aria-label={p.name} title={p.name} onClick={() => setTheme(p.theme)}
+                  className={`group overflow-hidden border-2 text-left ${on ? "border-spray shadow-block" : "border-curb hover:border-tag"}`}>
+                  <span className="flex h-12 items-end gap-1 p-1.5" style={{ background: p.theme.background }}>
+                    <span className="h-5 w-5 rounded-full" style={{ background: p.theme.accent, boxShadow: `0 0 0 2px ${p.theme.surface}` }} />
+                    <span className="h-3 w-3 rounded-full" style={{ background: p.theme.accent2 }} />
+                    <span className="ml-auto h-2 w-6 rounded-full opacity-80" style={{ background: p.theme.text }} />
+                  </span>
+                  <span className="block truncate bg-asphalt px-1.5 py-1 text-[11px] font-semibold">{p.name}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </section>
 

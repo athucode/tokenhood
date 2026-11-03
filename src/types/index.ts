@@ -21,8 +21,8 @@ export interface Payment {
   createdAt: string;
 }
 
-/** Building blocks a template can include. */
-export type SectionId = "hero" | "buy" | "tokenomics" | "roadmap" | "gallery" | "socials";
+/** How a template arranges the (always complete) page content. */
+export type LayoutId = "poster" | "split" | "gallery";
 
 export interface Theme {
   background: string;
@@ -36,7 +36,7 @@ export interface Template {
   id: string;
   name: string;
   tagline: string;
-  sections: SectionId[];
+  layout: LayoutId;
   /** Fee in whole $HOOD tokens. */
   priceHood: number;
   defaultTheme: Theme;

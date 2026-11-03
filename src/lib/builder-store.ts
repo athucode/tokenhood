@@ -39,7 +39,7 @@ export const useBuilder = create<BuilderState>((set) => ({
   load: (draft, slug) => set({ draft: { ...emptyDraft(), ...draft }, editing: slug }),
   patch: (p) => set((s) => ({ draft: { ...s.draft, ...p } })),
   setTheme: (p) => set((s) => ({ draft: { ...s.draft, theme: { ...s.draft.theme, ...p } } })),
-  // Switching template also loads that template's default colors.
-  setTemplate: (id) => set((s) => ({ draft: { ...s.draft, templateId: id, theme: getTemplate(id)?.defaultTheme ?? s.draft.theme } })),
+  // Template = layout only; the chosen color set stays.
+  setTemplate: (id) => set((s) => ({ draft: { ...s.draft, templateId: getTemplate(id) ? id : s.draft.templateId } })),
   reset: () => set({ draft: emptyDraft(), editing: null }),
 }));

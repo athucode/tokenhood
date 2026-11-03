@@ -39,7 +39,7 @@ export default async function MemeSite({ params }: Props) {
       <main className="flex-1"><SitePreview page={page} /></main>
       <OwnerEditButton slug={page.slug} owner={page.owner} />
       <footer className="border-t-2" style={{ borderColor: t.accent, background: t.surface }}>
-        <div className="mx-auto flex max-w-2xl flex-col items-center gap-2 px-4 py-6 text-center text-xs sm:flex-row sm:justify-between sm:text-left">
+        <div className="mx-auto flex max-w-5xl flex-col items-center gap-2 px-5 py-6 sm:px-10 text-center text-xs sm:flex-row sm:justify-between sm:text-left">
           <p className="font-display text-base">
             {page.tokenName} <span style={{ color: t.accent }}>${ticker}</span>
           </p>
