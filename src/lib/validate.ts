@@ -36,6 +36,8 @@ export function validateDraft(d: MemePageDraft): string[] {
   if (d.roadmap.length > 8) e.push("Roadmap supports up to 8 steps.");
   const okGallery = (u: string) => (u.startsWith("data:image/") && u.length <= MAX_GALLERY_CHARS) || (u.startsWith("https://") && isSafeUrl(u));
   if (d.gallery.length > 12 || !d.gallery.every(okGallery)) e.push("Gallery supports up to 12 images (uploads or https links).");
+  const lp = d.launchpad;
+  if (lp && (lp.name.length > 40 || (lp.url && !isSafeUrl(lp.url)))) e.push("Platform link must start with https:// (name max 40).");
   if ((d.textBefore ?? "").length > MAX_TEXT || (d.textAfter ?? "").length > MAX_TEXT) e.push(`Text blocks are limited to ${MAX_TEXT} characters each.`);
   return Array.from(new Set(e));
 }

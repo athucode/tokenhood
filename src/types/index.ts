@@ -82,6 +82,8 @@ export interface MemePage {
   /** Free text shown before / after the gallery spot. Optional for pages made before this existed. */
   textBefore?: string;
   textAfter?: string;
+  /** Platform the token was created on, typed by the user. Optional for older pages. */
+  launchpad?: { name: string; url: string };
   owner: Hex;
   paymentTxHash: Hex;
   status: "draft" | "published";

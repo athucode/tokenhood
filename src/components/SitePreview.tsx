@@ -158,6 +158,7 @@ function HeroPattern({ seed }: { seed: number }) {
 function TokenTicket({ page, ticker }: { page: MemePageDraft; ticker: string }) {
   const ca = page.contractAddress;
   const supply = page.tokenomics.totalSupply;
+  const lp = page.launchpad;
   return (
     <div className="relative">
       <Sticker ticker={ticker} />
@@ -188,6 +189,17 @@ function TokenTicket({ page, ticker }: { page: MemePageDraft; ticker: string }) 
             <span className="flex items-center gap-2 font-semibold"><ChainGlyph /> {HOOD_CHAIN.name}</span>
           </Row>
           {supply && <Row label="Total supply"><span className="font-semibold tabular-nums">{supply}</span></Row>}
+          {(lp?.name || lp?.url) && (
+            <Row label="Launched on">
+              {lp.url ? (
+                <a href={lp.url} target="_blank" rel="noopener noreferrer" className="truncate font-semibold underline underline-offset-4" style={{ textDecorationColor: "var(--ac)" }}>
+                  {lp.name || hostOf(lp.url)}
+                </a>
+              ) : (
+                <span className="truncate font-semibold">{lp.name}</span>
+              )}
+            </Row>
+          )}
         </dl>
 
         {ca && (
@@ -335,6 +347,14 @@ function tileClass(i: number, n: number, featured: boolean) {
 }
 
 /* ---------- helpers ---------- */
+
+function hostOf(u: string) {
+  try {
+    return new URL(u).hostname.replace(/^www\./, "");
+  } catch {
+    return u;
+  }
+}
 
 function hash(s: string) {
   let h = 2166136261;

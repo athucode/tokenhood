@@ -105,6 +105,17 @@ export function Builder({ editSlug }: { editSlug?: string }) {
         </div>
         <Field label="Tagline"><input className="input" value={draft.tagline} maxLength={140} onChange={(e) => patch({ tagline: e.target.value })} placeholder="The cat that owns the block." /></Field>
         <Field label={`Contract address (${HOOD_CHAIN.name})`}><input className="input font-mono text-xs" value={draft.contractAddress} onChange={(e) => patch({ contractAddress: e.target.value.trim() })} placeholder="0x..." /></Field>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Field label="Total supply">
+            <input className="input" value={draft.tokenomics.totalSupply} onChange={(e) => patch({ tokenomics: { ...draft.tokenomics, totalSupply: e.target.value } })} />
+          </Field>
+          <Field label="Launched on (platform)">
+            <input className="input" maxLength={40} value={draft.launchpad?.name ?? ""} onChange={(e) => patch({ launchpad: { name: e.target.value, url: draft.launchpad?.url ?? "" } })} placeholder="Platform name" />
+          </Field>
+        </div>
+        <Field label="Platform link (your token's page there)">
+          <input className="input" value={draft.launchpad?.url ?? ""} onChange={(e) => patch({ launchpad: { name: draft.launchpad?.name ?? "", url: e.target.value.trim() } })} placeholder="https://" />
+        </Field>
         <Field label="Page address">
           <div className="flex items-center gap-2">
             <input className="input disabled:opacity-60" disabled={Boolean(editing)} value={draft.slug} maxLength={32} onChange={(e) => patch({ slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "") })} placeholder="corner-cat" />
@@ -148,9 +159,6 @@ export function Builder({ editSlug }: { editSlug?: string }) {
 
       <section className="space-y-3">
         <h2 className="font-display text-xl">4. Content</h2>
-        <Field label="Total supply">
-          <input className="input" value={draft.tokenomics.totalSupply} onChange={(e) => patch({ tokenomics: { ...draft.tokenomics, totalSupply: e.target.value } })} />
-        </Field>
         <Field label="Roadmap (one step per line, max 8)">
           <textarea className="input min-h-24" value={draft.roadmap.join("\n")} onChange={(e) => patch({ roadmap: e.target.value.split("\n").slice(0, 8) })} />
         </Field>

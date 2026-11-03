@@ -20,6 +20,7 @@ const emptyDraft = (): MemePageDraft => ({
   gallery: [],
   textBefore: "",
   textAfter: "",
+  launchpad: { name: "", url: "" },
 });
 
 interface BuilderState {
