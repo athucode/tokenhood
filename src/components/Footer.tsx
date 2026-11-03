@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HOOD_INFO, isHoodLive } from "@/lib/hood-info";
+import type { HoodInfo } from "@/lib/hood-live";
 import { explorerTokenUrl, uniswapUrl } from "@/lib/hood";
 import { CopyButton } from "./CopyButton";
 import { Mark } from "./Header";
@@ -9,8 +9,8 @@ const NAV = [
   { href: "/feed", label: "Feed" },
 ];
 
-export function Footer() {
-  const { name, symbol, contractAddress, chainName, deployer, x, telegram } = HOOD_INFO;
+export function Footer({ info }: { info: HoodInfo }) {
+  const { name, symbol, contractAddress, chainName, deployer, x, telegram, isLive: isHoodLive } = info;
   const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
   const link = "text-smoke transition-colors hover:text-chalk";
 

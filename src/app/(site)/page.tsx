@@ -3,6 +3,7 @@ import { Feed } from "@/components/Feed";
 import { HoodSpotlight } from "@/components/HoodSpotlight";
 import { TEMPLATES } from "@/lib/templates";
 import { PALETTES } from "@/lib/palettes";
+import { getHoodInfo } from "@/lib/hood-live";
 import type { LayoutId } from "@/types";
 
 const STEPS: [string, string][] = [
@@ -13,7 +14,10 @@ const STEPS: [string, string][] = [
 
 const PRICE = TEMPLATES[0].priceHood;
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const hood = await getHoodInfo();
   return (
     <main>
       {/* Hero */}
@@ -24,7 +28,7 @@ export default function Home() {
               A home on the web for your token.
             </h1>
             <p className="mt-6 max-w-[44ch] text-lg leading-relaxed text-smoke">
-              Build a token site in minutes, pay once in $HOOD and share one clean link. No code and no hosting bill.
+              Build a token site in minutes, pay once in ${hood.symbol} and share one clean link. No code and no hosting bill.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <Link href="/builder" className="btn-primary px-6 py-3 text-[15px]">Build your site</Link>
@@ -32,7 +36,7 @@ export default function Home() {
             </div>
             <p className="mt-6 text-sm text-smoke">{PRICE.toLocaleString()} $HOOD per site. Edits are free.</p>
           </div>
-          <HoodSpotlight />
+          <HoodSpotlight info={hood} />
         </div>
       </section>
 

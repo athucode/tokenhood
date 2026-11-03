@@ -1,6 +1,7 @@
 import { robinhood } from "viem/chains";
 import { erc20Abi, parseUnits } from "viem";
 import type { Hex } from "@/types";
+import { HOOD_INFO } from "./hood-info";
 
 /** Chain where $HOOD lives. Change here if the token moves. */
 export const HOOD_CHAIN = robinhood;
@@ -20,7 +21,15 @@ export const buyUrl = (ca: string) => (SWAP_URL ? SWAP_URL.replaceAll("{ca}", ca
 
 const ZERO = "0x0000000000000000000000000000000000000000" as Hex;
 
-export const HOOD_TOKEN_ADDRESS = (process.env.NEXT_PUBLIC_HOOD_TOKEN_ADDRESS || ZERO) as Hex;
+/**
+ * Token used to charge the fee. Source: NEXT_PUBLIC_HOOD_TOKEN_ADDRESS if set, otherwise the
+ * contractAddress in lib/hood-info.ts. Deliberately NOT read from the editable /hood page,
+ * so editing a page can never change what users pay with.
+ */
+const isCA = (a?: string) => Boolean(a && /^0x[0-9a-fA-F]{40}$/.test(a));
+export const HOOD_TOKEN_ADDRESS = (isCA(process.env.NEXT_PUBLIC_HOOD_TOKEN_ADDRESS)
+  ? process.env.NEXT_PUBLIC_HOOD_TOKEN_ADDRESS
+  : isCA(HOOD_INFO.contractAddress) ? HOOD_INFO.contractAddress : ZERO) as Hex;
 export const HOOD_TREASURY_ADDRESS = (process.env.NEXT_PUBLIC_TREASURY_ADDRESS || ZERO) as Hex;
 export const HOOD_DECIMALS = Number(process.env.NEXT_PUBLIC_HOOD_DECIMALS ?? 18);
 

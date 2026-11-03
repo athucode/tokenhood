@@ -1,10 +1,11 @@
-import { HOOD_INFO, isHoodLive } from "@/lib/hood-info";
+import Link from "next/link";
+import type { HoodInfo } from "@/lib/hood-live";
 import { explorerTokenUrl, uniswapUrl } from "@/lib/hood";
 import { CopyButton } from "./CopyButton";
 
 /** The $HOOD token card used as the homepage hero visual. Values live in lib/hood-info.ts. */
-export function HoodSpotlight() {
-  const { name, symbol, contractAddress, chainName, deployer, x } = HOOD_INFO;
+export function HoodSpotlight({ info }: { info: HoodInfo }) {
+  const { name, symbol, contractAddress, chainName, deployer, x, pagePath, isLive: isHoodLive } = info;
   const rows: [string, React.ReactNode][] = [
     ["Name", name],
     ["Symbol", `$${symbol}`],
@@ -12,6 +13,7 @@ export function HoodSpotlight() {
     ["Deployed by", deployer.url ? <a href={deployer.url} target="_blank" rel="noopener noreferrer" className="underline decoration-curb underline-offset-4 hover:decoration-chalk">{deployer.name}</a> : deployer.name],
     ["X", <a key="x" href={x.url} target="_blank" rel="noopener noreferrer" className="underline decoration-curb underline-offset-4 hover:decoration-chalk">{x.handle}</a>],
   ];
+  if (pagePath) rows.push(["Website", <Link key="site" href={pagePath} className="underline decoration-curb underline-offset-4 hover:decoration-chalk">tokenhood.online{pagePath}</Link>]);
 
   return (
     <div className="relative">
