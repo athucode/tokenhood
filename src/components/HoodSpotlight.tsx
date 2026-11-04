@@ -27,9 +27,13 @@ export function HoodSpotlight({ info }: { info: HoodInfo }) {
 
       <div className="overflow-hidden rounded-3xl border border-curb bg-concrete/90 backdrop-blur">
         <div className="flex items-start justify-between gap-4 p-6 pb-5">
-          <div>
-            <p className="text-sm text-smoke">The token behind every site</p>
-            <p className="mt-1 text-5xl font-semibold tracking-[-0.04em]">${symbol}</p>
+          <div className="flex items-center gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/hood.jpg" alt={`$${symbol}`} width={72} height={72} className="h-[72px] w-[72px] rounded-full" />
+            <div>
+              <p className="text-sm text-smoke">The token behind every site</p>
+              <p className="mt-1 text-5xl font-semibold tracking-[-0.04em]">${symbol}</p>
+            </div>
           </div>
           <span className="mt-1 inline-flex items-center gap-1.5 rounded-full border border-curb px-2.5 py-1 text-xs text-smoke">
             <span className={`h-1.5 w-1.5 rounded-full ${isHoodLive ? "bg-[#3BE08A]" : "bg-smoke"}`} />

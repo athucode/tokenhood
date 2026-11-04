@@ -31,10 +31,8 @@ export function Header() {
   );
 }
 
-/** Tokenhood mark: a rounded block with a pink door. */
-export const Mark = ({ size = 22 }: { size?: number }) => (
-  <svg aria-hidden width={size} height={size} viewBox="0 0 24 24">
-    <rect x="1.5" y="1.5" width="21" height="21" rx="6.5" fill="#F4F4F2" />
-    <rect x="9" y="10" width="6" height="12.5" rx="3" fill="#FF3EA5" />
-  </svg>
+/** Tokenhood logo. */
+export const Mark = ({ size = 28 }: { size?: number }) => (
+  // eslint-disable-next-line @next/next/no-img-element
+  <img src="/logo.png" alt="" aria-hidden width={size} height={size} className="rounded-full" />
 );
